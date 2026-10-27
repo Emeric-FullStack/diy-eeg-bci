@@ -1,0 +1,17 @@
+# Python
+.venv/
+__pycache__/
+*.pyc
+.ipynb_checkpoints/
+
+# Données : trop lourdes pour Git
+data/*
+!data/README.md
+
+# Node (phase 2)
+node_modules/
+dist/
+
+# Système
+.DS_Store
+Thumbs.db
