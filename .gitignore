@@ -4,14 +4,20 @@ __pycache__/
 *.pyc
 .ipynb_checkpoints/
 
-# Données : trop lourdes pour Git
+# Data: too large for Git
 data/*
 !data/README.md
+
+# Personal notes, kept on this machine only
+private/
+
+# Unvalidated 3D exports (see hardware/case/README.md)
+hardware/**/draft/
 
 # Node (phase 2)
 node_modules/
 dist/
 
-# Système
+# System
 .DS_Store
 Thumbs.db
