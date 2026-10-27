@@ -15,7 +15,7 @@ Get a working Python environment and a clean project skeleton before touching an
 
 - A virtual environment keeps the project's packages separate from the system Python. It stores absolute paths, so moving or renaming the project folder means recreating it.
 - A program installed after an app was launched is not on that app's PATH: Git was installed but invisible to VS Code until a restart.
-- Spaces and special characters (like the long dash `–`) in a project path tend to break tools later (Arduino IDE, scripts). The folder will be renamed `diy-eeg-bci`.
+- Spaces and special characters (like the long dash `–`) in a project path tend to break tools later (Arduino IDE, scripts). The project moved to `C:\Users\Emeric\diy-eeg-bci` and the venv was rebuilt there.
 - Pinning versions in `requirements.txt` makes the environment reproducible on another machine.
 
 ## Next
