@@ -5,9 +5,11 @@
 [![Code: MIT](https://img.shields.io/badge/code-MIT-green)](LICENSE)
 [![Hardware: CERN-OHL-P-2.0](https://img.shields.io/badge/hardware-CERN--OHL--P--2.0-green)](hardware/LICENSE)
 
-> **FR** : Interface cerveau-machine « fait maison ». Objectif : ouvrir et fermer une pince, virtuelle puis réelle, par l'EEG, de façon fiable. On part de données EEG publiques, puis on passe à un capteur 2 canaux sur Arduino. Projet d'apprentissage documenté séance par séance dans [`docs/log/`](docs/log/).
+> **FR** : Interface cerveau-machine « fait maison ». Objectif : ouvrir et fermer une pince, virtuelle puis réelle, par l'EEG, de façon fiable. On part de données EEG publiques, puis on passe à un capteur 2 canaux sur Arduino. Projet d'apprentissage : je ne me contente pas de lancer des scripts, chaque notebook est un banc d'essai dont je tourne les boutons, et chaque séance est racontée dans [`docs/log/`](docs/log/), erreurs et blocages compris.
 
 A do-it-yourself brain-computer interface, built and documented step by step.
+
+This is a learning project. The notebooks are not demos to run once: each one is a test bench with a few constants at the top that I change to see what moves, and every session is written up in [`docs/log/`](docs/log/), including what I got wrong and what finally made it click. If you are learning EEG from scratch, start with the [learning path](#learning-path) below.
 
 **Goal #1: open and close a gripper with EEG, reliably.** First a virtual gripper, then a real one. Everything else waits until that works.
 
@@ -23,6 +25,26 @@ When you close your eyes, the visual cortex at the back of the head starts oscil
 
 With eyes closed, power in the 8–12 Hz band over the occipital electrodes is about 16 times higher, with a peak at 10 Hz (subject 1 of the PhysioNet dataset). The difference map puts the effect at the back of the head, over the visual cortex.
 Full analysis: [`analysis/01_eyes_open_vs_closed.ipynb`](analysis/01_eyes_open_vs_closed.ipynb).
+
+## Second result: a one-bit brain switch
+
+Two averages hide a curve. Gluing the eyes-open and eyes-closed minutes together and measuring alpha power every 2 seconds shows the rhythm switching on the moment the eyes close:
+
+![Alpha power over time, with a threshold](docs/img/alpha-over-time.png)
+
+A threshold halfway between the two conditions classifies 98 % of the windows correctly. One false positive around 25 s shows the main enemy of any BCI: a command fired when nothing was asked. Notebook: [`analysis/02_alpha_over_time.ipynb`](analysis/02_alpha_over_time.ipynb).
+
+## Learning path
+
+Each notebook answers one question and ends with knobs to turn. Read them in order; the log entry linked next to each one tells how the session actually went.
+
+| Notebook | Question | What I took away | Session |
+|---|---|---|---|
+| [`00_what_is_a_spectrum`](analysis/00_what_is_a_spectrum.ipynb) | What does a spectrum show? | A 10 Hz wave is 10 peaks per second and one spike at 10 Hz. Noise raises the floor but never moves a spike; the spectrum finds a wave the eye can no longer see. Band power turns the curve into one number. | [2026-10-28](docs/log/2026-10-28-what-is-a-spectrum.md) |
+| [`01_eyes_open_vs_closed`](analysis/01_eyes_open_vs_closed.ipynb) | Can we find the alpha rhythm in real EEG? | ×16 more 8–12 Hz power with eyes closed over O1/Oz/O2, ×4 over C3/C4: the effect is born at the back of the head. It varies a lot between subjects. | [2026-10-27](docs/log/2026-10-27-phase-1-eyes-open-closed.md), [2026-10-28](docs/log/2026-10-28-what-is-a-spectrum.md) |
+| [`02_alpha_over_time`](analysis/02_alpha_over_time.ipynb) | Does it switch on and off reliably? | Yes: a threshold on band power per window is a brain switch, 98 % correct here. Window length trades errors against reaction time. | [2026-10-29](docs/log/2026-10-29-alpha-over-time.md) |
+
+Honest note: notebook 01 was first written and run by an AI assistant, and I could not explain its result. Notebook 00 exists because of that: a synthetic signal whose answer is known in advance. The ×16 only made sense once I had built it myself from a sine and some noise, then seen it as a curve in notebook 02.
 
 ## Architecture
 
